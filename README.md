@@ -8,5 +8,5 @@ Install package [malt](https://github.com/themetaschemer/malt)
 
 ```shell
 # replace XX with the actual chapter number
-racket chapterXX.rkt
+racket chXX.rkt
 ```
