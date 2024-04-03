@@ -52,3 +52,30 @@
     (with-hypers
         ((beta 0.9))
         (try-plane rms-gradient-descent 3000 0.01)))
+
+(define adam-u
+    (lambda (P g)
+        (let ((r (smooth beta (ref P 2) (sqr g))))
+            (let ((alpha-hat (/ alpha (+ (sqrt r) epsilon)))
+                  (v (smooth mu (ref P 1) g)))
+                (list (- (ref P 0) (* alpha-hat v)) v r)))))
+
+(define adam-i
+    (lambda (p)
+        (let ((v (zeroes p)))
+            (let ((r v))
+                (list p v r)))))
+
+(define adam-d
+    (lambda (P)
+        (ref P 0)))
+
+(define adam-gradient-descent
+    (gradient-descent
+        adam-i adam-d adam-u))
+
+(printf "Test adam-gradient-descent ~a\n"
+(with-hypers
+    ((mu 0.85)
+     (beta 0.9))
+        (try-plane adam-gradient-descent 1500 0.01)))
